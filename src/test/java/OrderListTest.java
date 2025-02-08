@@ -12,7 +12,7 @@ public class OrderListTest {
 
     @Test
     @DisplayName("Получение испска заказов с limit=2")
-    public void getOrders_ok() {
+    public void getOrders() {
         REST client = new REST(BASE_URI);
         List<Order> orders = client.getOrders().extract().jsonPath().getList("orders", Order.class);
         countOrders(orders, 2);

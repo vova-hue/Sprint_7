@@ -39,7 +39,7 @@ public class CourierLoginTest {
 
     @Test
     @DisplayName("Логин курьера")
-    public void login_ok() throws JsonProcessingException {
+    public void login() throws JsonProcessingException {
         Credentials credentials = Credentials.fromCourier(courier);
         ValidatableResponse response = client.loginCourier(credentials);
         idIsPresent(response, 200, "id");
@@ -47,7 +47,7 @@ public class CourierLoginTest {
 
     @Test
     @DisplayName("Логин курьера без параметра login")
-    public void login_withoutParamLogin() {
+    public void loginWithoutParamLogin() {
         Credentials credentials = Credentials.fromCourierWithoutLogin(courier);
         ValidatableResponse response = client.loginCourier(credentials);
         paramMissing(response, 400, "Недостаточно данных для входа");
@@ -55,7 +55,7 @@ public class CourierLoginTest {
 
     @Test
     @DisplayName("Логин курьера без парметра password")
-    public void login_witoutParamPassword() {
+    public void loginWitoutParamPassword() {
         Credentials credentials = Credentials.fromCourierWithoutPassword(courier);
         ValidatableResponse response = client.loginCourier(credentials);
         paramMissing(response, 400, "Недостаточно данных для входа");
@@ -63,7 +63,7 @@ public class CourierLoginTest {
 
     @Test
     @DisplayName("Логин курьера с неверным login")
-    public void login_badLogin() {
+    public void loginBadLogin() {
         Credentials credentials = Credentials.fromCourier(badLoginCourier);
         ValidatableResponse response = client.loginCourier(credentials);
         badParam(response, 404, "Учетная запись не найдена");
@@ -71,7 +71,7 @@ public class CourierLoginTest {
 
     @Test
     @DisplayName("Логин курьера с неверным password")
-    public void login_badPassword() {
+    public void loginBadPassword() {
         Credentials credentials = Credentials.fromCourier(badPasswordCourier);
         ValidatableResponse response = client.loginCourier(credentials);
         badParam(response, 404, "Учетная запись не найдена");

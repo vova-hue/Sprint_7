@@ -17,36 +17,28 @@ import static org.junit.Assert.assertTrue;
 @RunWith(Parameterized.class)
 public class OrderCreateTest {
     private ObjectMapper objectMapper = new ObjectMapper();
-    private final String firstName;
-    private final String lastName;
-    private final String address;
-    private final int metroStation;
-    private final String phone;
-    private final int rentType;
-    private final String deliveryDate;
-    private final String comment;
+    private final String firstName = "Naruto";
+    private final String lastName = "Uchiha";
+    private final String address = "Konoha, 142 apt.";
+    private final int metroStation = 4;
+    private final String phone = "+7 800 355 35 35";
+    private final int rentType = 5;
+    private final String deliveryDate = "2020-06-06";
+    private final String comment = "Saske, come back to Konoha";
     private final List<String> color;
     private static final String BASE_URI = "https://qa-scooter.praktikum-services.ru/";
 
-    public OrderCreateTest(String firstName, String lastName, String address, int metroStation, String phone, int rentType, String deliveryDate, String comment, List color) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.metroStation = metroStation;
-        this.phone = phone;
-        this.rentType = rentType;
-        this.deliveryDate = deliveryDate;
-        this.comment = comment;
+    public OrderCreateTest(List color) {
         this.color = color;
     }
 
     @Parameterized.Parameters
     public static Object[][] getData() {
         return new Object[][]{
-                {"Naruto", "Uchiha", "Konoha, 142 apt.", 4, "+7 800 355 35 35", 5, "2020-06-06", "Saske, come back to Konoha", List.of("BLACK", "GREY")},
-                {"Naruto", "Uchiha", "Konoha, 142 apt.", 4, "+7 800 355 35 35", 5, "2020-06-06", "Saske, come back to Konoha", List.of("BLACK")},
-                {"Naruto", "Uchiha", "Konoha, 142 apt.", 4, "+7 800 355 35 35", 5, "2020-06-06", "Saske, come back to Konoha", List.of("GREY")},
-                {"Naruto", "Uchiha", "Konoha, 142 apt.", 4, "+7 800 355 35 35", 5, "2020-06-06", "Saske, come back to Konoha", List.of()},
+                {List.of("BLACK", "GREY")},
+                {List.of("BLACK")},
+                {List.of("GREY")},
+                {List.of()},
         };
     }
 
@@ -56,11 +48,11 @@ public class OrderCreateTest {
         REST client = new REST(BASE_URI);
         Order order = new Order(firstName, lastName, address, metroStation, phone, rentType, deliveryDate, comment, color);
         ValidatableResponse response = client.orderCreate(order);
-        order_ok(response, 201, "track");
+        orderOk(response, 201, "track");
     }
 
     @Step("Заказ создан, в ответе присутствует параметр trakc")
-    public void order_ok(ValidatableResponse response, int code, String track) throws JsonProcessingException {
+    public void orderOk(ValidatableResponse response, int code, String track) throws JsonProcessingException {
         response.assertThat().statusCode(code);
         String jsonString = response.extract().asString();
         JsonNode jsonNode = objectMapper.readTree(jsonString);

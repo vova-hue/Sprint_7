@@ -24,7 +24,7 @@ public class CourierCreateTest {
     @DisplayName("Создание уникального курьера")
     public void createUniqCourier() {
         ValidatableResponse response = client.create(courier);
-        createCourier_ok(response, 201, true);
+        createCourier(response, 201, true);
     }
 
     @Test
@@ -33,7 +33,7 @@ public class CourierCreateTest {
         ValidatableResponse firstResponse = client.create(courier);
         firstResponse.assertThat().statusCode(201);
         ValidatableResponse secondRespoce = client.create(courier);
-        createCourier_duplicate(secondRespoce, 409, "Этот логин уже используется");
+        createCourierDuplicate(secondRespoce, 409, "Этот логин уже используется");
     }
 
     @Test
@@ -41,7 +41,7 @@ public class CourierCreateTest {
     public void createCourierWithoutFirstName() {
         Credentials credentials = Credentials.courierWithoutFirstName(courier);
         ValidatableResponse response = client.create(credentials);
-        createCourier_paramMissimg(response, 400, "Недостаточно данных для создания учетной записи");
+        createCourierParamMissimg(response, 400, "Недостаточно данных для создания учетной записи");
     }
 
     @Test
@@ -49,7 +49,7 @@ public class CourierCreateTest {
     public void createCourierWithoutLogin() {
         Credentials credentials = Credentials.courierWithoutLogin(courier);
         ValidatableResponse response = client.create(credentials);
-        createCourier_paramMissimg(response, 400, "Недостаточно данных для создания учетной записи");
+        createCourierParamMissimg(response, 400, "Недостаточно данных для создания учетной записи");
     }
 
     @Test
@@ -57,7 +57,7 @@ public class CourierCreateTest {
     public void createCourierWithoutPassword() {
         Credentials credentials = Credentials.courierWithoutPassword(courier);
         ValidatableResponse response = client.create(credentials);
-        createCourier_paramMissimg(response, 400, "Недостаточно данных для создания учетной записи");
+        createCourierParamMissimg(response, 400, "Недостаточно данных для создания учетной записи");
     }
 
     @After
@@ -74,17 +74,17 @@ public class CourierCreateTest {
     }
 
     @Step("Курьер успешно создан")
-    public void createCourier_ok(ValidatableResponse response, int code, boolean ok) {
+    public void createCourier(ValidatableResponse response, int code, boolean ok) {
         response.assertThat().statusCode(code).body("ok", equalTo(ok));
     }
 
     @Step("Курьер с таким логином уже существует")
-    public void createCourier_duplicate(ValidatableResponse response, int code, String message) {
+    public void createCourierDuplicate(ValidatableResponse response, int code, String message) {
         response.assertThat().statusCode(code).body("message", equalTo(message));
     }
 
     @Step("Отсутствует один или несколько парметров")
-    public void createCourier_paramMissimg(ValidatableResponse response, int code, String message) {
+    public void createCourierParamMissimg(ValidatableResponse response, int code, String message) {
         response.assertThat().statusCode(code).body("message", equalTo(message));
     }
 }
