@@ -1,4 +1,5 @@
 import client.REST;
+import com.github.javafaker.Faker;
 import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
@@ -11,9 +12,10 @@ import static org.hamcrest.CoreMatchers.equalTo;
 
 
 public class CourierCreateTest {
-    private final String login = "UniqCourier1";
-    private final String password = "password";
-    private final String firstName = "courier";
+    Faker faker = new Faker();
+    private final String login = faker.name().name();
+    private final String password = faker.name().name();
+    private final String firstName = faker.name().name();
 
     private static final String BASE_URI = "https://qa-scooter.praktikum-services.ru/";
 

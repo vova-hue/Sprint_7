@@ -1,4 +1,5 @@
 import client.REST;
+import com.github.javafaker.Faker;
 import io.qameta.allure.Step;
 import io.qameta.allure.internal.shadowed.jackson.core.JsonProcessingException;
 import io.qameta.allure.internal.shadowed.jackson.databind.JsonNode;
@@ -16,15 +17,16 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 public class OrderCreateTest {
+    Faker faker = new Faker();
     private ObjectMapper objectMapper = new ObjectMapper();
-    private final String firstName = "Naruto";
-    private final String lastName = "Uchiha";
-    private final String address = "Konoha, 142 apt.";
-    private final int metroStation = 4;
-    private final String phone = "+7 800 355 35 35";
-    private final int rentType = 5;
-    private final String deliveryDate = "2020-06-06";
-    private final String comment = "Saske, come back to Konoha";
+    private final String firstName = faker.name().firstName();
+    private final String lastName = faker.name().lastName();
+    private final String address = faker.address().fullAddress();
+    private final int metroStation = faker.number().numberBetween(1, 20);
+    private final String phone = faker.phoneNumber().phoneNumber();
+    private final int rentType = faker.number().numberBetween(1, 10);
+    private final String deliveryDate = "2020-06-06"; //я не понимаю, как тут надо использовать faker
+    private final String comment = faker.name().fullName();
     private final List<String> color;
     private static final String BASE_URI = "https://qa-scooter.praktikum-services.ru/";
 
